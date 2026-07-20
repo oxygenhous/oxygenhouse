@@ -1,4 +1,7 @@
+"use client";
+
 import type { SectionDef } from "@/lib/report-sections";
+import { useI18n } from "@/lib/i18n";
 import { FieldInput } from "./field-input";
 
 type SectionValue = Record<string, unknown>;
@@ -22,6 +25,7 @@ export function SectionCard({
   value: SectionValue;
   onChange: (next: SectionValue) => void;
 }) {
+  const { t, fl } = useI18n();
   const enabled = section.mandatory || Boolean(value.mandatory);
 
   function updateField(path: (string | number)[], val: string) {
@@ -54,7 +58,7 @@ export function SectionCard({
       }`}
     >
       <div className="flex items-center justify-between pb-3 border-b border-slate-50">
-        <h2 className="font-extrabold text-slate-800 text-[15px]">{section.label}</h2>
+        <h2 className="font-extrabold text-slate-800 text-[15px]">{fl(section.label)}</h2>
         {!section.mandatory && (
           <label className="flex items-center gap-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600 transition-colors cursor-pointer select-none">
             <input
@@ -63,7 +67,7 @@ export function SectionCard({
               onChange={(e) => onChange({ ...value, mandatory: e.target.checked })}
               className="accent-teal-600 rounded"
             />
-            <span>هذا القسم موجود بالمستشفى</span>
+            <span>{t("section_exists")}</span>
           </label>
         )}
       </div>
@@ -76,14 +80,14 @@ export function SectionCard({
               <div key={table.key} className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                    {table.label}
+                    {fl(table.label)}
                   </h3>
                   <button
                     type="button"
                     onClick={() => addRow(table.key, table.columns)}
                     className="flex items-center gap-1 text-xs font-bold text-teal-600 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-xl border border-teal-100/50 transition-colors cursor-pointer"
                   >
-                    <span>+ إضافة صف جديد</span>
+                    <span>+ {t("add_row")}</span>
                   </button>
                 </div>
                 <div className="space-y-4">
@@ -103,7 +107,7 @@ export function SectionCard({
                         />
                       ))}
                       {rows.length > 1 && (
-                        <div className="col-span-2 sm:col-span-3 lg:col-span-4 flex justify-end mt-2 pt-2 border-t border-dashed border-slate-100">
+                        <div className="col-span-2 flex justify-end mt-2 pt-2 border-t border-dashed border-slate-100">
                           <button
                             type="button"
                             onClick={() => removeRow(table.key, i)}
@@ -112,7 +116,7 @@ export function SectionCard({
                             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
-                            <span>حذف هذا الصف</span>
+                            <span>{t("delete_row")}</span>
                           </button>
                         </div>
                       )}
@@ -128,7 +132,7 @@ export function SectionCard({
             return (
               <div key={group.key} className="space-y-3">
                 <h3 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  {group.label}
+                  {fl(group.label)}
                 </h3>
                 <div className="grid grid-cols-2 gap-4 rounded-2xl border border-slate-100 bg-slate-50/10 p-4">
                   {group.fields.map((field) => (
@@ -148,12 +152,12 @@ export function SectionCard({
 
           {section.notes && (
             <label className="flex flex-col gap-1.5 text-xs font-bold text-slate-500 block">
-              <span>ملاحظات القسم</span>
+              <span>{t("section_notes")}</span>
               <textarea
                 value={(value.notes as string) ?? ""}
                 onChange={(e) => onChange({ ...value, notes: e.target.value })}
                 rows={3}
-                placeholder="اكتب أي ملاحظات إضافية بخصوص هذا القسم هنا..."
+                placeholder={t("section_notes_ph")}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50/30 px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all"
               />
             </label>

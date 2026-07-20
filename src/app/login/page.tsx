@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Suspense, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 export default function LoginPage() {
   return (
@@ -20,6 +21,7 @@ export default function LoginPage() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { lang, toggle, t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +41,7 @@ function LoginForm() {
     setLoading(false);
 
     if (error) {
-      setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+      setError(t("login_error"));
       return;
     }
 
@@ -49,9 +51,19 @@ function LoginForm() {
 
   return (
     <main className="animated-mesh flex min-h-screen items-center justify-center px-4 relative overflow-hidden">
-      {/* Decorative background shapes */}
       <div className="absolute top-10 left-10 w-72 h-72 bg-teal-400/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+
+      {/* Language toggle - top corner */}
+      <button
+        onClick={toggle}
+        className="absolute top-5 left-5 flex items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 px-3 py-1.5 text-xs font-bold text-white transition-all cursor-pointer active:scale-95"
+      >
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+        </svg>
+        {lang === "ar" ? "English" : "عربي"}
+      </button>
 
       <form
         onSubmit={handleSubmit}
@@ -67,17 +79,17 @@ function LoginForm() {
             priority
           />
           <p className="text-sm font-medium text-slate-500">
-            نظام تقارير صيانة شبكة الغازات الطبية
+            {t("login_subtitle")}
           </p>
         </div>
 
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="email" className="text-xs font-bold text-slate-600 block">
-              البريد الإلكتروني
+              {t("email")}
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+              <span className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none text-slate-400">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                 </svg>
@@ -90,7 +102,7 @@ function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="example@mail.com"
-                className="w-full rounded-xl border border-slate-200 bg-white/50 py-2.5 pl-3 pr-10 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all text-left"
+                className="w-full rounded-xl border border-slate-200 bg-white/50 py-2.5 ps-3 pe-10 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all"
                 style={{ direction: "ltr" }}
               />
             </div>
@@ -98,10 +110,10 @@ function LoginForm() {
 
           <div className="space-y-1.5">
             <label htmlFor="password" className="text-xs font-bold text-slate-600 block">
-              كلمة المرور
+              {t("password")}
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+              <span className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none text-slate-400">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
@@ -114,7 +126,7 @@ function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-xl border border-slate-200 bg-white/50 py-2.5 pl-3 pr-10 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all text-left"
+                className="w-full rounded-xl border border-slate-200 bg-white/50 py-2.5 ps-3 pe-10 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all"
                 style={{ direction: "ltr" }}
               />
             </div>
@@ -138,10 +150,10 @@ function LoginForm() {
           {loading ? (
             <>
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-              <span>جاري تسجيل الدخول...</span>
+              <span>{t("signing_in")}</span>
             </>
           ) : (
-            <span>تسجيل الدخول</span>
+            <span>{t("sign_in")}</span>
           )}
         </button>
       </form>

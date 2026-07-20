@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { SECTION_SCHEMA, SIGNATURE_FIELDS } from "@/lib/report-sections";
 import { updateReportSections } from "@/app/(app)/actions";
+import { useI18n } from "@/lib/i18n";
 import { SectionCard } from "./section-card";
 import { FieldInput } from "./field-input";
 
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
+  const { t } = useI18n();
   const [sections, setSections] =
     useState<Record<string, unknown>>(initialSections);
   const [status, setStatus] = useState<"idle" | "saving" | "saved">("idle");
@@ -62,14 +64,13 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
         />
       ))}
 
-      {/* Recommendation and Notes card */}
       <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm border-r-4 border-r-amber-500">
         <h2 className="font-extrabold text-slate-800 text-[15px] pb-3 border-b border-slate-50">
-          التوصية والملاحظات العامة للمستشفى
+          {t("recommendation")} & {t("general_notes")}
         </h2>
         <div className="mt-4 space-y-4">
           <label className="flex flex-col gap-1.5 text-xs font-bold text-slate-500 block">
-            <span>التوصية الهندسية (Recommendation)</span>
+            <span>{t("recommendation")}</span>
             <textarea
               value={(sections.recommendation as string) ?? ""}
               onChange={(e) =>
@@ -79,29 +80,28 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
                 }))
               }
               rows={3}
-              placeholder="اكتب التوصية الفنية الموجهة لإدارة المستشفى أو مقاول الصيانة..."
+              placeholder={t("recommendation_ph")}
               className="w-full rounded-xl border border-slate-200 bg-slate-50/30 px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-xs font-bold text-slate-500 block">
-            <span>ملاحظات عامة (General Notes)</span>
+            <span>{t("general_notes")}</span>
             <textarea
               value={(sections.notes as string) ?? ""}
               onChange={(e) =>
                 setSections((prev) => ({ ...prev, notes: e.target.value }))
               }
               rows={3}
-              placeholder="اكتب أي ملاحظات إضافية أو تقييم عام للزيارة..."
+              placeholder={t("general_notes_ph")}
               className="w-full rounded-xl border border-slate-200 bg-slate-50/30 px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all"
             />
           </label>
         </div>
       </section>
 
-      {/* Signatures card */}
       <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm border-r-4 border-r-blue-600">
         <h2 className="font-extrabold text-slate-800 text-[15px] pb-3 border-b border-slate-50">
-          التوقيعات واعتماد التقرير
+          {t("signatures")}
         </h2>
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {SIGNATURE_FIELDS.map((field) => (
@@ -120,14 +120,13 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
         </div>
       </section>
 
-      {/* Floating glassmorphic bottom saving dock */}
       <div className="print:hidden fixed inset-x-0 bottom-0 border-t border-slate-100 bg-white/80 backdrop-blur-md shadow-[0_-8px_30px_rgba(0,0,0,0.03)] z-40">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5">
           <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
             {status === "saving" && (
               <div className="flex items-center gap-1.5 text-teal-600 animate-pulse">
                 <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-teal-600 border-t-transparent"></div>
-                <span>جاري الحفظ تلقائياً...</span>
+                <span>{t("saving")}</span>
               </div>
             )}
             {status === "saved" && (
@@ -135,14 +134,14 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </svg>
-                <span>تم حفظ جميع التعديلات</span>
+                <span>{t("auto_saved")}</span>
               </div>
             )}
             {status === "idle" && (
-              <span className="text-slate-400 font-semibold">جاهز للحفظ</span>
+              <span className="text-slate-400 font-semibold">{t("unsaved_changes")}</span>
             )}
           </div>
-          
+
           <div className="flex gap-2">
             <Link
               href={`/hospitals/${hospitalId}/reports/${reportId}/print`}
@@ -151,7 +150,7 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-              <span>معاينة للطباعة</span>
+              <span>{t("print_report")}</span>
             </Link>
             <button
               type="button"
@@ -161,7 +160,7 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
               </svg>
-              <span>حفظ الآن</span>
+              <span>{t("save_now")}</span>
             </button>
           </div>
         </div>

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-cairo), system-ui, sans-serif;
+  --font-sans: var(--font-ibm-plex), system-ui, sans-serif;
 }
 
 body {
-  font-family: var(--font-cairo), system-ui, sans-serif;
+  font-family: var(--font-ibm-plex), system-ui, sans-serif;
 }
 
 /* Custom Scrollbar */

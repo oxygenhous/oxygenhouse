@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 export function Header({ userEmail }: { userEmail: string }) {
   const router = useRouter();
+  const { lang, toggle, t } = useI18n();
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -15,7 +17,6 @@ export function Header({ userEmail }: { userEmail: string }) {
     router.refresh();
   }
 
-  // Get first letter of email for a user avatar
   const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "U";
 
   return (
@@ -32,7 +33,18 @@ export function Header({ userEmail }: { userEmail: string }) {
           />
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {/* Language toggle */}
+          <button
+            onClick={toggle}
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 hover:border-teal-200 hover:bg-teal-50 px-3 py-1.5 text-xs font-bold text-slate-600 hover:text-teal-700 transition-all cursor-pointer active:scale-95"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+            {lang === "ar" ? "English" : "عربي"}
+          </button>
+
           <div className="flex items-center gap-2 rounded-xl bg-slate-50 p-1.5 pl-3 border border-slate-100/50">
             <div className="flex h-7.5 w-7.5 items-center justify-center rounded-lg bg-teal-500/10 text-[13px] font-extrabold text-teal-700">
               {userInitial}
@@ -46,21 +58,10 @@ export function Header({ userEmail }: { userEmail: string }) {
             onClick={handleSignOut}
             className="flex items-center gap-1.5 rounded-xl border border-slate-200 hover:border-rose-100 hover:bg-rose-50 px-3 py-1.5 text-xs font-bold text-slate-600 hover:text-rose-600 transition-all cursor-pointer active:scale-95"
           >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-            تسجيل الخروج
+            {t("sign_out")}
           </button>
         </div>
       </div>
