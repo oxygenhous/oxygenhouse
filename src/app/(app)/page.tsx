@@ -3,14 +3,25 @@ import { DashboardContent } from "@/components/dashboard-content";
 import type { Hospital } from "@/lib/types";
 
 export default async function HospitalsPage() {
-  const supabase = await createClient();
-  const { data: hospitals } = await supabase
-    .from("hospitals")
-    .select("*")
-    .order("name")
-    .returns<Hospital[]>();
+  let list: Hospital[] = [];
 
-  const list = hospitals ?? [];
+  try {
+    const supabase = await createClient();
+    const { data: hospitals, error } = await supabase
+      .from("hospitals")
+      .select("*")
+      .order("name")
+      .returns<Hospital[]>();
+
+    if (error) {
+      console.error("Error fetching hospitals:", error);
+    } else {
+      list = hospitals ?? [];
+    }
+  } catch (err) {
+    console.error("Supabase connection error:", err);
+  }
+
   const uniqueCities = new Set(
     list.map((h) => h.city?.trim()).filter(Boolean)
   );
