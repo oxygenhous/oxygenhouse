@@ -111,7 +111,7 @@ export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
   const signatures = (sections.signatures as Record<string, string>) ?? {};
 
   return (
-    <div className="space-y-6 pb-28">
+    <div className="space-y-6 pb-40">
       {SECTION_SCHEMA.map((section) => (
         <SectionCard
           key={section.key}

@@ -696,12 +696,12 @@ function SignatureOverlay({
   const sig = (sections.signatures as Record<string, string>) ?? {};
   return (
     <>
-      <Cell pk={`${pageKey}_s_igas_name`} top={89.5} left={18} w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} align="left" />
-      <Cell pk={`${pageKey}_s_cont_name`} top={91.7} left={18} w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} align="left" />
-      <Cell pk={`${pageKey}_s_moh_name`} top={93.9} left={18} w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} align="left" />
-      <Cell pk={`${pageKey}_s_igas_sig`} top={89.5} left={68} w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} align="left" />
-      <Cell pk={`${pageKey}_s_cont_sig`} top={91.7} left={68} w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} align="left" />
-      <Cell pk={`${pageKey}_s_moh_sig`} top={93.9} left={68} w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} align="left" />
+      <Cell pk={`${pageKey}_s_igas_name`} top={89.5} left={18} w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} />
+      <Cell pk={`${pageKey}_s_cont_name`} top={91.7} left={18} w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} />
+      <Cell pk={`${pageKey}_s_moh_name`} top={93.9} left={18} w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} />
+      <Cell pk={`${pageKey}_s_igas_sig`} top={89.5} left={68} w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} />
+      <Cell pk={`${pageKey}_s_cont_sig`} top={91.7} left={68} w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} />
+      <Cell pk={`${pageKey}_s_moh_sig`} top={93.9} left={68} w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} />
     </>
   );
 }
@@ -751,14 +751,14 @@ function RecommendationOverlay({
       <textarea
         value={rec}
         onChange={(e) => onChange("recommendation", e.target.value)}
-        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-left"
+        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center"
         style={{ top: `${recPos.top}%`, left: `${recPos.left}%` }}
         placeholder="•••"
       />
       <textarea
         value={notes}
         onChange={(e) => onChange("notes", e.target.value)}
-        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-left"
+        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center"
         style={{ top: `${notesPos.top}%`, left: `${notesPos.left}%` }}
         placeholder="•••"
       />
