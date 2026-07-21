@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { PrintView } from "@/components/report-print/print-view";
-import { PrintButton } from "@/components/print-button";
 import type { Hospital, Report } from "@/lib/types";
 
 export default async function ReportPrintPage({
@@ -23,12 +22,6 @@ export default async function ReportPrintPage({
 
   if (!hospital || !report) notFound();
 
-  return (
-    <div>
-      <div className="print:hidden mb-4 flex justify-end">
-        <PrintButton />
-      </div>
-      <PrintView hospital={hospital} report={report} />
-    </div>
-  );
+  return <PrintView hospital={hospital} report={report} />;
 }
+

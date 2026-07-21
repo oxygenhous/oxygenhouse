@@ -88,3 +88,44 @@ export async function updateReportSections(
 
   revalidatePath(`/hospitals/${hospitalId}/reports/${reportId}`);
 }
+
+export async function updatePrintData(
+  reportId: string,
+  hospitalId: string,
+  sections: Record<string, unknown>,
+  hospitalData: {
+    name: string;
+    city: string | null;
+    governorate: string | null;
+    contractor_name: string | null;
+  },
+  reportData: {
+    report_date: string;
+    month: number;
+    year: number;
+  }
+) {
+  const supabase = await createClient();
+
+  await Promise.all([
+    supabase
+      .from("reports")
+      .update({
+        sections,
+        report_date: reportData.report_date,
+        month: reportData.month,
+        year: reportData.year,
+      })
+      .eq("id", reportId),
+    supabase
+      .from("hospitals")
+      .update(hospitalData)
+      .eq("id", hospitalId),
+  ]);
+
+  revalidatePath(`/hospitals/${hospitalId}/reports/${reportId}/print`);
+  revalidatePath(`/hospitals/${hospitalId}/reports/${reportId}`);
+  revalidatePath(`/hospitals/${hospitalId}`);
+  revalidatePath("/");
+}
+
