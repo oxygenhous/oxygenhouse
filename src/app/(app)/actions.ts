@@ -49,6 +49,37 @@ export async function updateHospital(hospitalId: string, formData: FormData) {
   revalidatePath(`/hospitals/${hospitalId}`);
 }
 
+export async function deleteHospital(hospitalId: string) {
+  const supabase = await createClient();
+  await supabase.from("hospitals").delete().eq("id", hospitalId);
+  revalidatePath("/");
+  redirect("/");
+}
+
+export async function deleteReport(reportId: string, hospitalId: string) {
+  const supabase = await createClient();
+  await supabase.from("reports").delete().eq("id", reportId);
+  revalidatePath(`/hospitals/${hospitalId}`);
+  revalidatePath("/");
+}
+
+export async function updateReportMetadata(
+  reportId: string,
+  hospitalId: string,
+  reportDate: string,
+  month: number,
+  year: number
+) {
+  const supabase = await createClient();
+  await supabase
+    .from("reports")
+    .update({ report_date: reportDate, month, year })
+    .eq("id", reportId);
+
+  revalidatePath(`/hospitals/${hospitalId}`);
+  revalidatePath(`/hospitals/${hospitalId}/reports/${reportId}`);
+}
+
 export async function createReport(hospitalId: string) {
   const supabase = await createClient();
   const {

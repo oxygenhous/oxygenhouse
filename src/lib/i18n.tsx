@@ -59,6 +59,14 @@ const T: Translations = {
   report_date: { ar: "تاريخ التقرير", en: "Report Date" },
   complete_ready: { ar: "مكتمل / جاهز للطباعة", en: "Complete / Ready to Print" },
   open_edit: { ar: "فتح وتعديل", en: "Open & Edit" },
+  delete_hospital: { ar: "مسح المستشفى بالكامل", en: "Delete Entire Hospital" },
+  delete_hospital_confirm: { ar: "هل أنت تأكد من مسح هذه المستشفى بالكامل؟ سيتم مسح جميع التقارير المرتبطة بها نهائياً ولا يمكن التراجع عن هذا الإجراء.", en: "Are you sure you want to delete this hospital? All related reports will be permanently deleted." },
+  delete_report: { ar: "مسح التقرير", en: "Delete Report" },
+  delete_report_confirm: { ar: "هل أنت تأكد من مسح هذا التقرير نهائياً؟", en: "Are you sure you want to permanently delete this report?" },
+  edit_report_title: { ar: "تعديل تفاصيل التقرير", en: "Edit Report Details" },
+  deleting: { ar: "جاري المسح...", en: "Deleting..." },
+  edit: { ar: "تعديل", en: "Edit" },
+  delete: { ar: "مسح", en: "Delete" },
 
   // ── Report Page ──
   report_title: { ar: "تقرير", en: "Report" },
