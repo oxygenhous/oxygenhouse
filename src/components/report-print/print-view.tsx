@@ -203,11 +203,13 @@ function CheckMark({
 }
 
 function HeaderOverlay({
+  pageKey,
   hospital,
   reportDate,
   onChangeHospital,
   onChangeReportDate,
 }: {
+  pageKey: string;
   hospital: Hospital;
   reportDate: string;
   onChangeHospital: (field: keyof Hospital, value: string) => void;
@@ -219,19 +221,21 @@ function HeaderOverlay({
     ? ""
     : `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}/${d.getFullYear()} (${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()})`;
 
-  const datePos = getPos("h_date", { top: 3.0, left: 64 });
-  const locPos = getPos("h_location", { top: 5.2, left: 64 });
+  const kDate = `${pageKey}_h_date`;
+  const kLoc = `${pageKey}_h_location`;
+  const datePos = getPos(kDate, { top: 3.0, left: 64 });
+  const locPos = getPos(kLoc, { top: 5.2, left: 64 });
 
   return (
     <>
-      <Cell pk="h_name" top={5.2} left={22} w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} align="left" />
-      <Cell pk="h_contractor" top={7.4} left={22} w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} align="left" />
+      <Cell pk={`${pageKey}_h_name`} top={5.2} left={22} w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} align="left" />
+      <Cell pk={`${pageKey}_h_contractor`} top={7.4} left={22} w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} align="left" />
 
       {/* Date */}
       {calibrate ? (
         <div
-          onPointerDown={(e) => startDrag(e, "h_date", { top: 3.0, left: 64 })}
-          title="h_date"
+          onPointerDown={(e) => startDrag(e, kDate, { top: 3.0, left: 64 })}
+          title={kDate}
           className="absolute z-30 flex items-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none leading-none touch-none"
           style={{ top: `${datePos.top}%`, left: `${datePos.left}%`, width: "33%", height: "13px" }}
         >
@@ -255,8 +259,8 @@ function HeaderOverlay({
       {/* Location */}
       {calibrate ? (
         <div
-          onPointerDown={(e) => startDrag(e, "h_location", { top: 5.2, left: 64 })}
-          title="h_location"
+          onPointerDown={(e) => startDrag(e, kLoc, { top: 5.2, left: 64 })}
+          title={kLoc}
           className="absolute z-30 flex items-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none leading-none touch-none"
           style={{ top: `${locPos.top}%`, left: `${locPos.left}%`, width: "33%", height: "13px" }}
         >
@@ -291,52 +295,58 @@ function HeaderOverlay({
 }
 
 function SignatureOverlay({
+  pageKey,
   sections,
   onChange,
 }: {
+  pageKey: string;
   sections: Record<string, unknown>;
   onChange: (field: string, value: string) => void;
 }) {
   const sig = (sections.signatures as Record<string, string>) ?? {};
   return (
     <>
-      <Cell pk="s_igas_name" top={89.5} left={18} w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} align="left" />
-      <Cell pk="s_cont_name" top={91.7} left={18} w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} align="left" />
-      <Cell pk="s_moh_name" top={93.9} left={18} w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} align="left" />
-      <Cell pk="s_igas_sig" top={89.5} left={68} w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} align="left" />
-      <Cell pk="s_cont_sig" top={91.7} left={68} w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} align="left" />
-      <Cell pk="s_moh_sig" top={93.9} left={68} w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} align="left" />
+      <Cell pk={`${pageKey}_s_igas_name`} top={89.5} left={18} w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} align="left" />
+      <Cell pk={`${pageKey}_s_cont_name`} top={91.7} left={18} w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} align="left" />
+      <Cell pk={`${pageKey}_s_moh_name`} top={93.9} left={18} w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} align="left" />
+      <Cell pk={`${pageKey}_s_igas_sig`} top={89.5} left={68} w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} align="left" />
+      <Cell pk={`${pageKey}_s_cont_sig`} top={91.7} left={68} w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} align="left" />
+      <Cell pk={`${pageKey}_s_moh_sig`} top={93.9} left={68} w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} align="left" />
     </>
   );
 }
 
 function RecommendationOverlay({
+  pageKey,
   sections,
   onChange,
 }: {
+  pageKey: string;
   sections: Record<string, unknown>;
   onChange: (key: string, value: string) => void;
 }) {
   const { calibrate, getPos, startDrag } = useCalib();
   const rec = (sections.recommendation as string) || "";
   const notes = (sections.notes as string) || "";
-  const recPos = getPos("r_rec", { top: 81.5, left: 4 });
-  const notesPos = getPos("r_notes", { top: 81.5, left: 53 });
+  const kRec = `${pageKey}_r_rec`;
+  const kNotes = `${pageKey}_r_notes`;
+  const recPos = getPos(kRec, { top: 81.5, left: 4 });
+  const notesPos = getPos(kNotes, { top: 81.5, left: 53 });
 
   if (calibrate) {
     return (
       <>
         <div
-          onPointerDown={(e) => startDrag(e, "r_rec", { top: 81.5, left: 4 })}
-          title="r_rec"
+          onPointerDown={(e) => startDrag(e, kRec, { top: 81.5, left: 4 })}
+          title={kRec}
           className="absolute z-30 flex items-center justify-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none touch-none"
           style={{ top: `${recPos.top}%`, left: `${recPos.left}%`, width: "44%", height: "5%" }}
         >
           {rec || "recommendation"}
         </div>
         <div
-          onPointerDown={(e) => startDrag(e, "r_notes", { top: 81.5, left: 53 })}
-          title="r_notes"
+          onPointerDown={(e) => startDrag(e, kNotes, { top: 81.5, left: 53 })}
+          title={kNotes}
           className="absolute z-30 flex items-center justify-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none touch-none"
           style={{ top: `${notesPos.top}%`, left: `${notesPos.left}%`, width: "44%", height: "5%" }}
         >
@@ -1024,14 +1034,15 @@ export function PrintView({
             />
             <div className="absolute inset-0">
               <HeaderOverlay
+                pageKey={page.sectionKey}
                 hospital={hospitalData}
                 reportDate={reportDate}
                 onChangeHospital={updateHospitalField}
                 onChangeReportDate={updateReportDate}
               />
               {getDataOverlay(page.sectionKey, sections, updateSection)}
-              <RecommendationOverlay sections={sections} onChange={updateRecommendationNotes} />
-              <SignatureOverlay sections={sections} onChange={updateSignatures} />
+              <RecommendationOverlay pageKey={page.sectionKey} sections={sections} onChange={updateRecommendationNotes} />
+              <SignatureOverlay pageKey={page.sectionKey} sections={sections} onChange={updateSignatures} />
             </div>
           </div>
         ))}
