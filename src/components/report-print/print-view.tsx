@@ -88,6 +88,141 @@ function useCalib() {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
+// Calibrated default positions (dragged into place on the ministry images).
+// Applied for everyone; a user's own localStorage overrides still win.
+const CALIBRATED: Record<string, Pos> = {
+  ap_comp2_model: { top: 24.26, left: 71.03 }, ap_comp2_serial_number: { top: 26.1, left: 70.95 }, ap_comp2_power_kw: { top: 28.19, left: 71.03 }, ap_comp2_flow: { top: 30.15, left: 70.61 }, ap_comp2_control_panel: { top: 32.18, left: 70.53 }, ap_comp2_oil_filter: { top: 34.14, left: 70.61 }, ap_comp2_oil_level: { top: 36.1, left: 71.37 }, ap_comp2_running_hours: { top: 38.54, left: 71.03 },
+  ap_comp1_model: { top: 24.08, left: 49.98 }, ap_comp1_serial_number: { top: 26.16, left: 49.73 }, ap_comp1_power_kw: { top: 28.36, left: 49.9 }, ap_comp1_flow: { top: 30.44, left: 49.64 }, ap_comp1_control_panel: { top: 32.35, left: 49.64 }, ap_comp1_oil_filter: { top: 34.43, left: 49.47 }, ap_comp1_oil_level: { top: 36.11, left: 49.39 }, ap_comp1_running_hours: { top: 38.3, left: 49.06 },
+  ap_comp0_model: { top: 24.38, left: 29.06 }, ap_comp0_serial_number: { top: 26.46, left: 28.55 }, ap_comp0_power_kw: { top: 28.42, left: 28.8 }, ap_comp0_flow: { top: 30.39, left: 28.8 }, ap_comp0_control_panel: { top: 32.53, left: 28.97 }, ap_comp0_oil_filter: { top: 34.43, left: 29.06 }, ap_comp0_oil_level: { top: 36.4, left: 28.97 }, ap_comp0_running_hours: { top: 38.19, left: 29.06 },
+  ap_dry2_manufacturer: { top: 45.13, left: 71.7 }, ap_dry2_power: { top: 54.48, left: 70.61 }, ap_dry2_type: { top: 52.52, left: 70.78 }, ap_dry2_flow: { top: 50.55, left: 70.95 }, ap_dry2_drain: { top: 48.94, left: 71.12 }, ap_dry2_serial_number: { top: 47.04, left: 71.2 },
+  ap_dry1_power: { top: 54.25, left: 49.81 }, ap_dry1_type: { top: 52.46, left: 50.06 }, ap_dry1_flow: { top: 50.55, left: 50.65 }, ap_dry1_drain: { top: 48.77, left: 50.82 }, ap_dry1_serial_number: { top: 46.86, left: 50.48 }, ap_dry1_manufacturer: { top: 44.9, left: 50.32 },
+  ap_dry0_manufacturer: { top: 44.78, left: 29.31 }, ap_dry0_serial_number: { top: 46.68, left: 29.31 }, ap_dry0_drain: { top: 48.47, left: 29.22 }, ap_dry0_flow: { top: 50.49, left: 29.39 }, ap_dry0_type: { top: 52.58, left: 29.48 }, ap_dry0_power: { top: 54.13, left: 28.38 },
+  ap_tank_manufacturer: { top: 59.45, left: 24.6 }, ap_tank_capacity: { top: 61.23, left: 24.69 }, ap_tank_clean: { top: 63.14, left: 24.52 }, ap_tank_drain: { top: 65.05, left: 24.44 }, ap_tank_safety_valve: { top: 67.19, left: 24.35 },
+  ap_filt_cyclone_filter: { top: 59.39, left: 73.6 }, ap_filt_micronic_filter: { top: 61.29, left: 73.51 }, ap_filt_submicronic_filter: { top: 63.02, left: 73.34 }, ap_filt_dust_filter: { top: 65.1, left: 73.26 }, ap_filt_automatic_drain: { top: 67.3, left: 73.34 },
+  ap_reg_main: { top: 71.82, left: 22.59 }, ap_reg_bar2: { top: 73.9, left: 22.34 },
+  air_plant_h_contractor: { top: 11.7, left: 34.43 }, air_plant_h_name: { top: 9.09, left: 33.34 }, air_plant_h_location: { top: 9.26, left: 62.15 }, air_plant_h_date: { top: 6.65, left: 57.7 },
+  air_plant_r_rec: { top: 78.26, left: 4 }, air_plant_r_notes: { top: 78.2, left: 52.66 },
+  air_plant_s_igas_name: { top: 84.85, left: 17.92 }, air_plant_s_cont_name: { top: 87.46, left: 18.34 }, air_plant_s_moh_name: { top: 89.48, left: 18.42 }, air_plant_s_igas_sig: { top: 84.85, left: 68.17 }, air_plant_s_cont_sig: { top: 87.17, left: 69.26 }, air_plant_s_moh_sig: { top: 89.13, left: 69.09 },
+  vacuum_plant_h_contractor: { top: 12.81, left: 35.36 }, vacuum_plant_h_name: { top: 10.19, left: 35.02 }, vacuum_plant_h_location: { top: 10.43, left: 58.54 }, vacuum_plant_h_date: { top: 7.93, left: 58.2 },
+  vp_pump0_min_pressure: { top: 51.55, left: 27.46 }, vp_pump0_max_pressure: { top: 48.95, left: 27.88 }, vp_pump0_running_hours: { top: 46.12, left: 26.96 }, vp_pump0_flow: { top: 43.76, left: 26.37 }, vp_pump0_control_panel: { top: 41.4, left: 26.2 }, vp_pump0_oil_level: { top: 39.1, left: 26.7 }, vp_pump0_oil_filters: { top: 36.62, left: 26.2 }, vp_pump0_power: { top: 34.2, left: 26.7 }, vp_pump0_serial_number: { top: 31.6, left: 26.62 }, vp_pump0_model: { top: 29.24, left: 26.87 },
+  vp_pump1_min_pressure: { top: 51.79, left: 49.73 }, vp_pump1_max_pressure: { top: 48.95, left: 48.8 }, vp_pump1_running_hours: { top: 46.18, left: 49.56 }, vp_pump1_flow: { top: 43.76, left: 49.64 }, vp_pump1_control_panel: { top: 41.58, left: 49.73 }, vp_pump1_oil_level: { top: 38.98, left: 50.74 }, vp_pump1_oil_filters: { top: 36.56, left: 48.89 }, vp_pump1_power: { top: 34.14, left: 48.64 }, vp_pump1_serial_number: { top: 31.66, left: 49.73 }, vp_pump1_model: { top: 29.13, left: 50.06 },
+  vp_pump2_min_pressure: { top: 51.79, left: 70.61 }, vp_pump2_max_pressure: { top: 49.19, left: 69.86 }, vp_pump2_running_hours: { top: 46.77, left: 69.86 }, vp_pump2_flow: { top: 44.06, left: 70.11 }, vp_pump2_control_panel: { top: 41.58, left: 70.44 }, vp_pump2_oil_level: { top: 39.22, left: 70.95 }, vp_pump2_oil_filters: { top: 36.74, left: 70.02 }, vp_pump2_power: { top: 33.9, left: 70.44 }, vp_pump2_serial_number: { top: 31.48, left: 70.02 }, vp_pump2_model: { top: 28.83, left: 70.28 },
+  vp_tank_drain: { top: 62.82, left: 24.27 }, vp_tank_capacity: { top: 60.17, left: 24.1 }, vp_tank_manufacturer: { top: 57.87, left: 24.1 },
+  vp_filt_type: { top: 62.88, left: 72.92 }, vp_filt_clean: { top: 60.4, left: 73.43 }, vp_filt_manufacturer: { top: 57.69, left: 73.18 },
+  vacuum_plant_r_rec: { top: 71.93, left: 3.16 }, vacuum_plant_r_notes: { top: 71.46, left: 53.34 },
+  vacuum_plant_s_igas_name: { top: 81.6, left: 17.58 }, vacuum_plant_s_cont_name: { top: 84.33, left: 18.34 }, vacuum_plant_s_moh_name: { top: 86.89, left: 18.84 }, vacuum_plant_s_igas_sig: { top: 81.71, left: 66.15 }, vacuum_plant_s_cont_sig: { top: 84.21, left: 67.16 }, vacuum_plant_s_moh_sig: { top: 86.71, left: 67.24 },
+  oxygen_plant_h_contractor: { top: 11.38, left: 33.68 }, oxygen_plant_h_name: { top: 8.77, left: 32.67 }, oxygen_plant_h_location: { top: 9.06, left: 60.89 }, oxygen_plant_h_date: { top: 6.74, left: 59.3 },
+  ot_manufacturer: { top: 29.79, left: 3.99 }, ot_serial: { top: 29.79, left: 30.1 }, ot_capacity: { top: 45.73, left: 5.17 }, ot_date: { top: 45.49, left: 30.27 }, ot_leak_ok: { top: 55.02, left: 8.52 }, ot_leak_def: { top: 54.55, left: 20.02 }, ot_gauge_ok: { top: 54.84, left: 34.62 }, ot_gauge_def: { top: 54.49, left: 44.69 }, ot_vap_ok: { top: 63.35, left: 9.02 }, ot_vap_def: { top: 64.07, left: 19.85 }, ot_refill: { top: 63.88, left: 29.93 },
+  oxygen_plant_r_rec: { top: 73.48, left: 4.34 }, oxygen_plant_r_notes: { top: 73.3, left: 53.25 },
+  oxygen_plant_s_igas_name: { top: 81.12, left: 16.07 }, oxygen_plant_s_cont_name: { top: 83.68, left: 17.58 }, oxygen_plant_s_moh_name: { top: 86.29, left: 17.41 }, oxygen_plant_s_igas_sig: { top: 81.24, left: 66.74 }, oxygen_plant_s_cont_sig: { top: 83.62, left: 67.75 }, oxygen_plant_s_moh_sig: { top: 86.11, left: 67.92 },
+  oxygen_manifold_automatic_h_contractor: { top: 11.5, left: 33.76 }, oxygen_manifold_automatic_h_name: { top: 8.88, left: 33.51 }, oxygen_manifold_automatic_h_location: { top: 8.59, left: 61.31 }, oxygen_manifold_automatic_h_date: { top: 6.33, left: 58.96 },
+  oxygen_manifold_automatic_manufacturer: { top: 35, left: 34.5 }, oxygen_manifold_automatic_serial: { top: 42.13, left: 35.76 }, oxygen_manifold_automatic_qtyL: { top: 51.82, left: 12.05 }, oxygen_manifold_automatic_tpl_ok: { top: 59.6, left: 12.37 }, oxygen_manifold_automatic_tpl_ch: { top: 59.42, left: 27.41 }, oxygen_manifold_automatic_co_ok: { top: 52.08, left: 42.19 }, oxygen_manifold_automatic_co_ch: { top: 52.32, left: 57.7 }, oxygen_manifold_automatic_qtyR: { top: 51.46, left: 72.25 }, oxygen_manifold_automatic_g_ok: { top: 59.66, left: 42.02 }, oxygen_manifold_automatic_g_ch: { top: 59.48, left: 57.37 }, oxygen_manifold_automatic_tpr_ok: { top: 59.3, left: 71.66 }, oxygen_manifold_automatic_tpr_ch: { top: 59.78, left: 86.93 }, oxygen_manifold_automatic_cpd: { top: 66.78, left: 21.06 }, oxygen_manifold_automatic_points: { top: 67.49, left: 52.86 },
+  oxygen_manifold_automatic_r_rec: { top: 73.24, left: 4.84 }, oxygen_manifold_automatic_r_notes: { top: 73.89, left: 52.5 },
+  oxygen_manifold_automatic_s_igas_name: { top: 81.65, left: 18.34 }, oxygen_manifold_automatic_s_cont_name: { top: 84.09, left: 18.42 }, oxygen_manifold_automatic_s_moh_name: { top: 86.71, left: 18.34 }, oxygen_manifold_automatic_s_igas_sig: { top: 82.07, left: 67.24 }, oxygen_manifold_automatic_s_cont_sig: { top: 84.15, left: 67.24 }, oxygen_manifold_automatic_s_moh_sig: { top: 86.89, left: 66.91 },
+  oxygen_manifold_manual_manufacturer: { top: 34.04, left: 1.49 }, oxygen_manifold_manual_serial: { top: 45.96, left: 2.25 }, oxygen_manifold_manual_qtyL: { top: 53.61, left: 10.54 }, oxygen_manifold_manual_co_ok: { top: 53.49, left: 40.68 }, oxygen_manifold_manual_co_ch: { top: 53.49, left: 55.1 }, oxygen_manifold_manual_qtyR: { top: 53.81, left: 70.83 }, oxygen_manifold_manual_tpl_ok: { top: 61.01, left: 10.86 }, oxygen_manifold_manual_tpl_ch: { top: 61.2, left: 25.14 }, oxygen_manifold_manual_g_ok: { top: 61.4, left: 40.6 }, oxygen_manifold_manual_g_ch: { top: 61.01, left: 55.35 }, oxygen_manifold_manual_tpr_ok: { top: 61.14, left: 70.99 }, oxygen_manifold_manual_tpr_ch: { top: 61.53, left: 85.34 }, oxygen_manifold_manual_power: { top: 68.79, left: 37.08 },
+  oxygen_manifold_manual_r_rec: { top: 75.97, left: 5.43 }, oxygen_manifold_manual_r_notes: { top: 75.06, left: 52.58 },
+  oxygen_manifold_manual_s_igas_name: { top: 83.38, left: 17.75 }, oxygen_manifold_manual_s_cont_name: { top: 85.97, left: 18.34 }, oxygen_manifold_manual_s_moh_name: { top: 88.56, left: 19.01 }, oxygen_manifold_manual_s_igas_sig: { top: 83.45, left: 66.74 }, oxygen_manifold_manual_s_cont_sig: { top: 86.24, left: 67.25 }, oxygen_manifold_manual_s_moh_sig: { top: 88.24, left: 66.82 },
+  oxygen_manifold_manual_h_contractor: { top: 12.41, left: 32.33 }, oxygen_manifold_manual_h_name: { top: 9.76, left: 32.42 }, oxygen_manifold_manual_h_location: { top: 9.56, left: 59.55 }, oxygen_manifold_manual_h_date: { top: 6.71, left: 60.22 },
+  air_manual_manifold_manufacturer: { top: 34.44, left: 3.17 }, air_manual_manifold_serial: { top: 46.1, left: 2.08 }, air_manual_manifold_qtyL: { top: 53.83, left: 10.79 }, air_manual_manifold_tpl_ok: { top: 61.49, left: 10.77 }, air_manual_manifold_tpl_ch: { top: 61.17, left: 25.48 }, air_manual_manifold_co_ok: { top: 54.32, left: 40.6 }, air_manual_manifold_co_ch: { top: 53.67, left: 55.6 }, air_manual_manifold_qtyR: { top: 53.7, left: 71.66 }, air_manual_manifold_g_ok: { top: 61.49, left: 40.26 }, air_manual_manifold_g_ch: { top: 61.55, left: 55.27 }, air_manual_manifold_tpr_ok: { top: 61.23, left: 71.92 }, air_manual_manifold_tpr_ch: { top: 61.23, left: 87.52 }, air_manual_manifold_power: { top: 68.68, left: 37.92 },
+  air_manual_manifold_r_rec: { top: 73.71, left: 4 }, air_manual_manifold_r_notes: { top: 73.91, left: 51.32 },
+  air_manual_manifold_s_igas_name: { top: 81.46, left: 16.07 }, air_manual_manifold_s_cont_name: { top: 83.72, left: 16.15 }, air_manual_manifold_s_moh_name: { top: 85.86, left: 16.32 }, air_manual_manifold_s_igas_sig: { top: 81.39, left: 68.08 }, air_manual_manifold_s_cont_sig: { top: 83.78, left: 68.25 }, air_manual_manifold_s_moh_sig: { top: 85.79, left: 67.75 },
+  air_manual_manifold_h_contractor: { top: 11.71, left: 30.65 }, air_manual_manifold_h_name: { top: 8.8, left: 31.07 }, air_manual_manifold_h_location: { top: 9.38, left: 59.04 }, air_manual_manifold_h_date: { top: 6.22, left: 58.04 },
+};
+
+// N2O auto manifold shares the O2 auto manifold layout — reuse those positions
+// as its defaults so an enabled N2O page starts already aligned.
+const DEFAULT_POSITIONS: Record<string, Pos> = { ...CALIBRATED };
+for (const [k, v] of Object.entries(CALIBRATED)) {
+  if (k.startsWith("oxygen_manifold_automatic_")) {
+    const nk = k.replace("oxygen_manifold_automatic_", "n2o_manifold_automatic_");
+    if (!(nk in DEFAULT_POSITIONS)) DEFAULT_POSITIONS[nk] = v;
+  }
+}
+
+// Arabic labels shown inside each box while calibrating, so the user
+// knows exactly which field each box belongs to.
+const FIELD_LABELS: Record<string, string> = {
+  // headers
+  name: "اسم المستشفى",
+  contractor: "المقاول",
+  location: "المكان",
+  date: "التاريخ",
+  // signatures (specific — must win over generic "name")
+  igas_name: "اسم مهندس iGAS",
+  cont_name: "اسم مهندس المقاول",
+  moh_name: "اسم مهندس الوزارة",
+  igas_sig: "توقيع مهندس iGAS",
+  cont_sig: "توقيع مهندس المقاول",
+  moh_sig: "توقيع مهندس الوزارة",
+  // recommendation / notes
+  rec: "التوصية",
+  notes: "الملاحظات",
+  // common fields
+  model: "الموديل",
+  serial_number: "الرقم التسلسلي",
+  serial_no: "الرقم التسلسلي",
+  serial: "الرقم التسلسلي",
+  power_kw: "القدرة",
+  power: "القدرة",
+  flow: "التدفق",
+  control_panel: "لوحة التحكم",
+  oil_filter: "فلتر الزيت",
+  oil_filters: "فلاتر الزيت",
+  oil_level: "مستوى الزيت",
+  running_hours: "ساعات التشغيل",
+  manufacturer: "الشركة المصنعة",
+  drain: "الصرف",
+  type: "النوع",
+  capacity: "السعة",
+  tank_capacity: "سعة الخزان",
+  clean: "النظافة",
+  safety_valve: "صمام الأمان",
+  cyclone_filter: "فلتر سيكلون",
+  micronic_filter: "فلتر ميكرونيك",
+  submicronic_filter: "فلتر سب ميكرونيك",
+  dust_filter: "فلتر الغبار",
+  automatic_drain: "الصرف الأوتوماتيك",
+  main: "رئيسي",
+  bar2: "٢ بار",
+  max_pressure: "أقصى ضغط",
+  min_pressure: "أقل ضغط",
+  date_of_installation: "تاريخ التركيب",
+  last_ppm_date: "آخر صيانة دورية",
+  last_date_of_change: "آخر تاريخ تغيير",
+  noise: "الضوضاء",
+  refill: "وقت التعبئة",
+  qtyL: "عدد الاسطوانات (يسار)",
+  qtyR: "عدد الاسطوانات (يمين)",
+  cpd: "تغيير الاسطوانات/يوم",
+  points: "النقاط",
+};
+
+const LABEL_KEYS = Object.keys(FIELD_LABELS).sort((a, b) => b.length - a.length);
+
+const COL_NAMES: Record<string, string> = { comp: "كمبريسور", dry: "مجفف", pump: "مضخة" };
+const COL_NUMS = ["١", "٢", "٣"];
+
+function calibLabel(pk: string): string {
+  // Checkbox fields
+  if (pk.endsWith("_ok")) return "✓ سليم";
+  if (pk.endsWith("_def")) return "✗ عيب";
+  if (pk.endsWith("_ch")) return "↺ تغيير";
+
+  // Column-table fields: e.g. ap_comp0_model, vp_pump1_serial_number
+  const m = pk.match(/_(comp|dry|pump)(\d)_(.+)$/);
+  if (m) {
+    const col = `${COL_NAMES[m[1]]} ${COL_NUMS[Number(m[2])] ?? ""}`;
+    const fk = m[3];
+    return `${col}: ${FIELD_LABELS[fk] ?? fk}`;
+  }
+
+  // Longest-match on the remaining field key
+  for (const key of LABEL_KEYS) {
+    if (pk === key || pk.endsWith("_" + key)) return FIELD_LABELS[key];
+  }
+  return pk.split("_").slice(-1)[0];
+}
+
 function Cell({
   pk,
   top,
@@ -503,16 +638,6 @@ function VacuumPlantOverlay({
         ))
       )}
 
-      <Cell
-        pk="vp_notes"
-        top={68}
-        left={4}
-        w="44%"
-        value={(sections.vacuum_plant as Record<string, unknown>)?.notes as string ?? ""}
-        onChange={(v) => onChange(["vacuum_plant", "notes"], v)}
-        align="left"
-      />
-
       {tankFields.map((field, i) => (
         <Cell
           key={`tank_${field}`}
@@ -776,7 +901,7 @@ export function PrintView({
   }, []);
 
   const getPos = useCallback(
-    (key: string, def: Pos) => positions[key] ?? def,
+    (key: string, def: Pos) => positions[key] ?? DEFAULT_POSITIONS[key] ?? def,
     [positions]
   );
 
@@ -787,7 +912,7 @@ export function PrintView({
     const page = target.closest(".print-page") as HTMLElement | null;
     if (!page) return;
     const rect = page.getBoundingClientRect();
-    const start = positionsRef.current[key] ?? def;
+    const start = positionsRef.current[key] ?? DEFAULT_POSITIONS[key] ?? def;
     const sx = e.clientX;
     const sy = e.clientY;
 
