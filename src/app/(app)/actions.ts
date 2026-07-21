@@ -53,7 +53,6 @@ export async function deleteHospital(hospitalId: string) {
   const supabase = await createClient();
   await supabase.from("hospitals").delete().eq("id", hospitalId);
   revalidatePath("/");
-  redirect("/");
 }
 
 export async function deleteReport(reportId: string, hospitalId: string) {

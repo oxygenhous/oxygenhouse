@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import { createHospital, deleteHospital, updateHospital } from "@/app/(app)/actions";
@@ -14,6 +15,7 @@ export function DashboardContent({
   totalCities: number;
 }) {
   const { t } = useI18n();
+  const router = useRouter();
   const totalHospitals = hospitals.length;
 
   const [editingHospital, setEditingHospital] = useState<Hospital | null>(null);
@@ -22,9 +24,13 @@ export function DashboardContent({
 
   async function handleDeleteHospital(hospitalId: string) {
     setIsPending(true);
-    await deleteHospital(hospitalId);
-    setDeletingHospitalId(null);
-    setIsPending(false);
+    try {
+      await deleteHospital(hospitalId);
+      setDeletingHospitalId(null);
+      router.refresh();
+    } finally {
+      setIsPending(false);
+    }
   }
 
   async function handleUpdateHospital(e: React.FormEvent<HTMLFormElement>) {

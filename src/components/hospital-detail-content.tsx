@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import {
@@ -20,6 +21,7 @@ export function HospitalDetailContent({
   reports: Report[];
 }) {
   const { t } = useI18n();
+  const router = useRouter();
 
   const [isEditingHospital, setIsEditingHospital] = useState(false);
   const [isDeletingHospital, setIsDeletingHospital] = useState(false);
@@ -33,7 +35,12 @@ export function HospitalDetailContent({
 
   async function handleDeleteHospital() {
     setIsPending(true);
-    await deleteHospital(hospital.id);
+    try {
+      await deleteHospital(hospital.id);
+      router.push("/");
+    } finally {
+      setIsPending(false);
+    }
   }
 
   async function handleDeleteReport(reportId: string) {
