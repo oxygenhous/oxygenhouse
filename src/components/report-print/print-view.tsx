@@ -68,32 +68,37 @@ function Cell({
   w,
   value,
   onChange,
+  align = "center",
 }: {
   top: string;
   left: string;
   w?: string;
   value: string;
   onChange?: (v: string) => void;
+  align?: "left" | "center" | "right";
 }) {
   return (
     <div
-      className="absolute text-[7.5pt] font-medium leading-tight"
+      className="absolute text-[7.5pt] font-medium leading-none flex items-center justify-center"
       style={{
         top,
         left,
         width: w ?? "auto",
         maxWidth: w,
+        height: "12px",
       }}
     >
       <input
         type="text"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
-        className="w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0"
+        className={`w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:p-0 print:m-0
+          ${align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left"}
+        `}
         style={{
           fontSize: "inherit",
           fontWeight: "inherit",
-          textAlign: "inherit",
+          height: "100%",
         }}
         placeholder="•••"
       />
@@ -149,30 +154,32 @@ function HeaderOverlay({
 
   return (
     <>
-      <Cell top="7.5%" left="22%" w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} />
-      <Cell top="9.8%" left="22%" w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} />
+      <Cell top="7.5%" left="22%" w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} align="left" />
+      <Cell top="9.8%" left="22%" w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} align="left" />
       
       {/* Date Overlay */}
-      <div className="absolute text-[7.5pt]" style={{ top: "5.5%", left: "64%", width: "33%" }}>
+      <div className="absolute text-[7.5pt]" style={{ top: "5.5%", left: "64%", width: "33%", height: "12px" }}>
         <input
           type="date"
           value={reportDate}
           onChange={(e) => onChangeReportDate(e.target.value)}
-          className="print:hidden w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none font-medium leading-none text-slate-800"
+          className="print:hidden w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 text-left"
+          style={{ height: "100%" }}
         />
-        <span className="hidden print:inline font-medium leading-tight text-slate-800 print:text-black">
+        <span className="hidden print:inline font-medium leading-none text-slate-800 print:text-black">
           {formattedDate}
         </span>
       </div>
 
       {/* Location: City and Governorate */}
-      <div className="absolute text-[7.5pt] font-medium leading-tight flex items-center gap-1" style={{ top: "7.8%", left: "64%", width: "33%" }}>
+      <div className="absolute text-[7.5pt] font-medium leading-none flex items-center gap-1" style={{ top: "7.8%", left: "64%", width: "33%", height: "12px" }}>
         <input
           type="text"
           value={hospital.city || ""}
           onChange={(e) => onChangeHospital("city", e.target.value)}
           placeholder="المدينة"
-          className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none font-medium leading-none text-slate-800 placeholder-slate-300"
+          className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 text-left"
+          style={{ height: "100%" }}
         />
         <span className="print:hidden text-slate-400">-</span>
         <input
@@ -180,7 +187,8 @@ function HeaderOverlay({
           value={hospital.governorate || ""}
           onChange={(e) => onChangeHospital("governorate", e.target.value)}
           placeholder="المحافظة"
-          className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none font-medium leading-none text-slate-800 placeholder-slate-300"
+          className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 text-left"
+          style={{ height: "100%" }}
         />
         <span className="hidden print:inline">
           {[hospital.city, hospital.governorate].filter(Boolean).join(" - ")}
@@ -200,12 +208,12 @@ function SignatureOverlay({
   const sig = (sections.signatures as Record<string, string>) ?? {};
   return (
     <>
-      <Cell top="91%" left="18%" w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} />
-      <Cell top="93.2%" left="18%" w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} />
-      <Cell top="95.4%" left="18%" w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} />
-      <Cell top="91%" left="68%" w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} />
-      <Cell top="93.2%" left="68%" w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} />
-      <Cell top="95.4%" left="68%" w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} />
+      <Cell top="91%" left="18%" w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} align="left" />
+      <Cell top="93.2%" left="18%" w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} align="left" />
+      <Cell top="95.4%" left="18%" w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} align="left" />
+      <Cell top="91%" left="68%" w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} align="left" />
+      <Cell top="93.2%" left="68%" w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} align="left" />
+      <Cell top="95.4%" left="68%" w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} align="left" />
     </>
   );
 }
@@ -224,14 +232,14 @@ function RecommendationOverlay({
       <textarea
         value={rec}
         onChange={(e) => onChange("recommendation", e.target.value)}
-        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0"
+        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-left"
         style={{ top: "84.5%", left: "4%" }}
         placeholder="•••"
       />
       <textarea
         value={notes}
         onChange={(e) => onChange("notes", e.target.value)}
-        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0"
+        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-left"
         style={{ top: "84.5%", left: "53%" }}
         placeholder="•••"
       />
@@ -322,8 +330,8 @@ function AirPlantOverlay({
       ))}
 
       {/* Regulators */}
-      <Cell top="78.5%" left="22%" w="72%" value={pv(regulators.main)} onChange={(v) => onChange(["air_plant", "regulators", "main"], v)} />
-      <Cell top="80.7%" left="22%" w="72%" value={pv(regulators.bar_2)} onChange={(v) => onChange(["air_plant", "regulators", "bar_2"], v)} />
+      <Cell top="78.5%" left="22%" w="72%" value={pv(regulators.main)} onChange={(v) => onChange(["air_plant", "regulators", "main"], v)} align="left" />
+      <Cell top="80.7%" left="22%" w="72%" value={pv(regulators.bar_2)} onChange={(v) => onChange(["air_plant", "regulators", "bar_2"], v)} align="left" />
     </>
   );
 }
@@ -372,6 +380,7 @@ function VacuumPlantOverlay({
         w="44%"
         value={(sections.vacuum_plant as Record<string, unknown>)?.notes as string ?? ""}
         onChange={(v) => onChange(["vacuum_plant", "notes"], v)}
+        align="left"
       />
 
       {/* Tank */}
