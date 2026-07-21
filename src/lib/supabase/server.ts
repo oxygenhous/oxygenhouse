@@ -19,7 +19,7 @@ export async function createClient() {
             );
           } catch {
             // called from a Server Component; safe to ignore because
-            // proxy.ts refreshes the session on every request
+            // middleware.ts refreshes the session on every request
           }
         },
       },

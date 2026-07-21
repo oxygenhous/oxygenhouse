@@ -6,10 +6,15 @@ const PUBLIC_PATHS = ["/login"];
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return response;
+    }
+
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -24,25 +29,27 @@ export async function proxy(request: NextRequest) {
           );
         },
       },
+    });
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const isPublicPath = PUBLIC_PATHS.some((path) =>
+      request.nextUrl.pathname.startsWith(path)
+    );
+
+    if (!user && !isPublicPath) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("next", request.nextUrl.pathname);
+      return NextResponse.redirect(loginUrl);
     }
-  );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const isPublicPath = PUBLIC_PATHS.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
-
-  if (!user && !isPublicPath) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  if (user && request.nextUrl.pathname === "/login") {
-    return NextResponse.redirect(new URL("/", request.url));
+    if (user && request.nextUrl.pathname === "/login") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  } catch (error) {
+    console.error("Proxy middleware error:", error);
   }
 
   return response;
