@@ -178,6 +178,23 @@ export function SectionCard({
               />
             </label>
           )}
+
+          {/* Per-section recommendation */}
+          <label className="flex flex-col gap-1.5 text-xs font-bold text-amber-600 block">
+            <span className="flex items-center gap-1.5">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {t("recommendation")}
+            </span>
+            <textarea
+              value={(value.recommendation as string) ?? ""}
+              onChange={(e) => onChange({ ...value, recommendation: e.target.value })}
+              rows={2}
+              placeholder={t("recommendation_ph")}
+              className="w-full rounded-xl border border-amber-200 bg-amber-50/30 px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder-amber-300 focus:border-amber-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-400/10 transition-all"
+            />
+          </label>
         </div>
       )}
     </section>

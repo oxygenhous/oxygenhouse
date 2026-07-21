@@ -510,7 +510,7 @@ function Cell({
           left: `${pos.left}%`,
           width: w ?? "auto",
           minWidth: "24px",
-          height: "13px",
+          height: "14px",
           overflow: "hidden",
           whiteSpace: "nowrap",
         }}
@@ -522,13 +522,15 @@ function Cell({
 
   return (
     <div
-      className="absolute text-[7.5pt] font-medium leading-none flex items-center justify-center"
+      className="absolute font-medium leading-none flex items-center justify-center"
       style={{
         top: `${pos.top}%`,
         left: `${pos.left}%`,
         width: w ?? "auto",
         maxWidth: w,
-        height: "12px",
+        height: "14px",
+        fontSize: "9pt",
+        fontFamily: "'Inter', 'Cairo', sans-serif",
       }}
     >
       <input
@@ -540,7 +542,8 @@ function Cell({
         `}
         style={{
           fontSize: "inherit",
-          fontWeight: "inherit",
+          fontFamily: "inherit",
+          fontWeight: "600",
           height: "100%",
         }}
         placeholder="•••"
@@ -751,15 +754,15 @@ function RecommendationOverlay({
       <textarea
         value={rec}
         onChange={(e) => onChange("recommendation", e.target.value)}
-        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center"
-        style={{ top: `${recPos.top}%`, left: `${recPos.left}%` }}
+        className="absolute leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center font-semibold"
+        style={{ top: `${recPos.top}%`, left: `${recPos.left}%`, fontSize: "9pt", fontFamily: "'Inter', 'Cairo', sans-serif" }}
         placeholder="•••"
       />
       <textarea
         value={notes}
         onChange={(e) => onChange("notes", e.target.value)}
-        className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center"
-        style={{ top: `${notesPos.top}%`, left: `${notesPos.left}%` }}
+        className="absolute leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center font-semibold"
+        style={{ top: `${notesPos.top}%`, left: `${notesPos.left}%`, fontSize: "9pt", fontFamily: "'Inter', 'Cairo', sans-serif" }}
         placeholder="•••"
       />
     </>
@@ -1285,11 +1288,17 @@ export function PrintView({
     }
   };
 
-  const updateRecommendationNotes = (key: string, val: string) => {
-    setSections((prev) => ({
-      ...prev,
-      [key]: val,
-    }));
+  const updateRecommendationNotes = (sectionKey: string, key: string, val: string) => {
+    setSections((prev) => {
+      const sectionData = (prev[sectionKey] as Record<string, unknown>) ?? {};
+      return {
+        ...prev,
+        [sectionKey]: {
+          ...sectionData,
+          [key]: val,
+        },
+      };
+    });
   };
 
   const updateSignatures = (field: string, val: string) => {
@@ -1422,7 +1431,11 @@ export function PrintView({
               />
               {getDataOverlay(page.sectionKey, sections, updateSection)}
               {page.sectionKey !== "oxygen_generator" && (
-                <RecommendationOverlay pageKey={page.sectionKey} sections={sections} onChange={updateRecommendationNotes} />
+                <RecommendationOverlay
+                  pageKey={page.sectionKey}
+                  sections={(sections[page.sectionKey] as Record<string, unknown>) ?? {}}
+                  onChange={(key, val) => updateRecommendationNotes(page.sectionKey, key, val)}
+                />
               )}
               <SignatureOverlay pageKey={page.sectionKey} sections={sections} onChange={updateSignatures} />
             </div>
