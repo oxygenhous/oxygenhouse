@@ -65,6 +65,10 @@ const T: Translations = {
 
   // ── Print ──
   print_save_pdf: { ar: "طباعة / حفظ PDF", en: "Print / Save PDF" },
+  adjust_positions: { ar: "تحديد المواقع", en: "Adjust Positions" },
+  done_positions: { ar: "تم — حفظ المواقع", en: "Done — Save Positions" },
+  reset_positions: { ar: "إعادة ضبط", en: "Reset" },
+  calibrate_hint: { ar: "اسحب كل خانة بالماوس وحطها مكانها الصح على الصورة — المواقع بتتحفظ تلقائياً وبتفضل ثابتة لكل التقارير", en: "Drag each field with the mouse onto its correct spot on the image — positions save automatically and stay fixed for all reports" },
 
   // ── Months ──
   month_1: { ar: "يناير", en: "January" },
