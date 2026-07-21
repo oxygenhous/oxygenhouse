@@ -358,7 +358,13 @@ export function emptyReportSections(): Record<string, unknown> {
     const value: Record<string, unknown> = { mandatory: section.mandatory };
 
     for (const table of section.tables ?? []) {
-      value[table.key] = [emptyRow(table.columns)];
+      const rowCount =
+        table.key === "compressors" ||
+        table.key === "dryers" ||
+        table.key === "pumps"
+          ? 3
+          : 1;
+      value[table.key] = Array.from({ length: rowCount }, () => emptyRow(table.columns));
     }
     for (const group of section.groups ?? []) {
       value[group.key] = emptyGroup(group.fields);

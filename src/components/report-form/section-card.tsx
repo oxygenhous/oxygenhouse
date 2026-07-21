@@ -6,6 +6,19 @@ import { FieldInput } from "./field-input";
 
 type SectionValue = Record<string, unknown>;
 
+function getRowLabel(tableKey: string, index: number, lang: "ar" | "en"): string {
+  if (tableKey === "compressors") {
+    return lang === "ar" ? `كمبريسور رقم ${index + 1}` : `Compressor #${index + 1}`;
+  }
+  if (tableKey === "dryers") {
+    return lang === "ar" ? `مجفف رقم ${index + 1}` : `Dryer #${index + 1}`;
+  }
+  if (tableKey === "pumps") {
+    return lang === "ar" ? `مضخة رقم ${index + 1}` : `Pump #${index + 1}`;
+  }
+  return lang === "ar" ? `بند رقم ${index + 1}` : `Item #${index + 1}`;
+}
+
 function asRows(value: unknown): Record<string, string>[] {
   return Array.isArray(value) ? (value as Record<string, string>[]) : [];
 }
@@ -25,7 +38,7 @@ export function SectionCard({
   value: SectionValue;
   onChange: (next: SectionValue) => void;
 }) {
-  const { t, fl } = useI18n();
+  const { t, fl, lang } = useI18n();
   const enabled = section.mandatory || Boolean(value.mandatory);
 
   function updateField(path: (string | number)[], val: string) {
@@ -96,6 +109,9 @@ export function SectionCard({
                       key={i}
                       className="grid grid-cols-2 gap-4 rounded-2xl border border-slate-100 bg-slate-50/10 p-4 shadow-inner relative hover:border-slate-200/50 transition-all"
                     >
+                      <div className="col-span-2 text-xs font-bold text-teal-700 border-b border-slate-100 pb-2">
+                        {getRowLabel(table.key, i, lang)}
+                      </div>
                       {table.columns.map((col) => (
                         <FieldInput
                           key={col.key}

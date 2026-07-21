@@ -267,7 +267,7 @@ function AirPlantOverlay({
   const colWidths = ["18%", "22%", "28%"];
 
   const dryerFields = ["manufacturer", "serial_number", "drain", "flow", "type", "power"];
-  const dryerRowTops = ["48%", "50.2%", "52.4%", "54.6%", "56.8%", "59%"];
+  const dryerRowTops = ["43.6%", "45.8%", "48%", "50.2%", "52.4%", "54.6%"];
 
   const tankFields = ["manufacturer", "capacity", "clean", "drain", "safety_valve"];
   const tankRowTops = ["65%", "67.2%", "69.4%", "71.6%", "73.8%"];

@@ -14,10 +14,67 @@ type Props = {
   initialSections: Record<string, unknown>;
 };
 
+function sanitizeReportSections(sections: Record<string, unknown>): Record<string, unknown> {
+  const next = structuredClone(sections ?? {});
+  
+  const padTable = (sectionKey: string, tableKey: string, columns: { key: string }[]) => {
+    if (!next[sectionKey]) {
+      next[sectionKey] = {
+        mandatory:
+          sectionKey === "air_plant" ||
+          sectionKey === "vacuum_plant" ||
+          sectionKey === "oxygen_plant" ||
+          sectionKey === "oxygen_manifold_automatic",
+      };
+    }
+    const section = next[sectionKey] as Record<string, any>;
+    if (!section[tableKey]) section[tableKey] = [];
+    if (!Array.isArray(section[tableKey])) section[tableKey] = [];
+    
+    const rows = section[tableKey] as Record<string, string>[];
+    while (rows.length < 3) {
+      rows.push(Object.fromEntries(columns.map((c) => [c.key, ""])));
+    }
+  };
+
+  padTable("air_plant", "compressors", [
+    { key: "model" },
+    { key: "serial_number" },
+    { key: "power_kw" },
+    { key: "flow" },
+    { key: "control_panel" },
+    { key: "oil_filter" },
+    { key: "oil_level" },
+    { key: "running_hours" },
+  ]);
+  padTable("air_plant", "dryers", [
+    { key: "manufacturer" },
+    { key: "serial_number" },
+    { key: "drain" },
+    { key: "flow" },
+    { key: "type" },
+    { key: "power" },
+  ]);
+  padTable("vacuum_plant", "pumps", [
+    { key: "model" },
+    { key: "serial_number" },
+    { key: "power" },
+    { key: "oil_filters" },
+    { key: "oil_level" },
+    { key: "control_panel" },
+    { key: "flow" },
+    { key: "running_hours" },
+    { key: "max_pressure" },
+    { key: "min_pressure" },
+  ]);
+
+  return next;
+}
+
 export function ReportForm({ reportId, hospitalId, initialSections }: Props) {
   const { t } = useI18n();
   const [sections, setSections] =
-    useState<Record<string, unknown>>(initialSections);
+    useState<Record<string, unknown>>(() => sanitizeReportSections(initialSections));
   const [status, setStatus] = useState<"idle" | "saving" | "saved">("idle");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isFirstRender = useRef(true);
