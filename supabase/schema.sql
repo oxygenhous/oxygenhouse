@@ -70,3 +70,9 @@ create policy "reports: authenticated write" on reports
 
 create policy "reports: authenticated update" on reports
   for update to authenticated using (true) with check (true);
+
+create policy "hospitals: authenticated delete" on hospitals
+  for delete to authenticated using (true);
+
+create policy "reports: authenticated delete" on reports
+  for delete to authenticated using (true);
