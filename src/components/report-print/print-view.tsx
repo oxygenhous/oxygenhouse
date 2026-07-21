@@ -154,11 +154,11 @@ function HeaderOverlay({
 
   return (
     <>
-      <Cell top="7.5%" left="22%" w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} align="left" />
-      <Cell top="9.8%" left="22%" w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} align="left" />
+      <Cell top="5.2%" left="22%" w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} align="left" />
+      <Cell top="7.4%" left="22%" w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} align="left" />
       
       {/* Date Overlay */}
-      <div className="absolute text-[7.5pt]" style={{ top: "5.5%", left: "64%", width: "33%", height: "12px" }}>
+      <div className="absolute text-[7.5pt]" style={{ top: "3.0%", left: "64%", width: "33%", height: "12px" }}>
         <input
           type="date"
           value={reportDate}
@@ -172,7 +172,7 @@ function HeaderOverlay({
       </div>
 
       {/* Location: City and Governorate */}
-      <div className="absolute text-[7.5pt] font-medium leading-none flex items-center gap-1" style={{ top: "7.8%", left: "64%", width: "33%", height: "12px" }}>
+      <div className="absolute text-[7.5pt] font-medium leading-none flex items-center gap-1" style={{ top: "5.2%", left: "64%", width: "33%", height: "12px" }}>
         <input
           type="text"
           value={hospital.city || ""}
@@ -208,12 +208,12 @@ function SignatureOverlay({
   const sig = (sections.signatures as Record<string, string>) ?? {};
   return (
     <>
-      <Cell top="91%" left="18%" w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} align="left" />
-      <Cell top="93.2%" left="18%" w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} align="left" />
-      <Cell top="95.4%" left="18%" w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} align="left" />
-      <Cell top="91%" left="68%" w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} align="left" />
-      <Cell top="93.2%" left="68%" w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} align="left" />
-      <Cell top="95.4%" left="68%" w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} align="left" />
+      <Cell top="89.5%" left="18%" w="28%" value={sig.igas_eng_name || ""} onChange={(v) => onChange("igas_eng_name", v)} align="left" />
+      <Cell top="91.7%" left="18%" w="28%" value={sig.contractor_eng_name || ""} onChange={(v) => onChange("contractor_eng_name", v)} align="left" />
+      <Cell top="93.9%" left="18%" w="28%" value={sig.moh_eng_name || ""} onChange={(v) => onChange("moh_eng_name", v)} align="left" />
+      <Cell top="89.5%" left="68%" w="28%" value={sig.igas_eng_signature || ""} onChange={(v) => onChange("igas_eng_signature", v)} align="left" />
+      <Cell top="91.7%" left="68%" w="28%" value={sig.contractor_eng_signature || ""} onChange={(v) => onChange("contractor_eng_signature", v)} align="left" />
+      <Cell top="93.9%" left="68%" w="28%" value={sig.moh_eng_signature || ""} onChange={(v) => onChange("moh_eng_signature", v)} align="left" />
     </>
   );
 }
@@ -233,14 +233,14 @@ function RecommendationOverlay({
         value={rec}
         onChange={(e) => onChange("recommendation", e.target.value)}
         className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-left"
-        style={{ top: "84.5%", left: "4%" }}
+        style={{ top: "81.5%", left: "4%" }}
         placeholder="•••"
       />
       <textarea
         value={notes}
         onChange={(e) => onChange("notes", e.target.value)}
         className="absolute text-[7pt] leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-left"
-        style={{ top: "84.5%", left: "53%" }}
+        style={{ top: "81.5%", left: "53%" }}
         placeholder="•••"
       />
     </>
@@ -270,10 +270,10 @@ function AirPlantOverlay({
   const dryerRowTops = ["43.6%", "45.8%", "48%", "50.2%", "52.4%", "54.6%"];
 
   const tankFields = ["manufacturer", "capacity", "clean", "drain", "safety_valve"];
-  const tankRowTops = ["65%", "67.2%", "69.4%", "71.6%", "73.8%"];
+  const tankRowTops = ["59.8%", "62.0%", "64.2%", "66.4%", "68.6%"];
 
   const filterFields = ["cyclone_filter", "micronic_filter", "submicronic_filter", "dust_filter", "automatic_drain"];
-  const filterRowTops = ["65%", "67.2%", "69.4%", "71.6%", "73.8%"];
+  const filterRowTops = ["59.8%", "62.0%", "64.2%", "66.4%", "68.6%"];
 
   return (
     <>
@@ -330,8 +330,8 @@ function AirPlantOverlay({
       ))}
 
       {/* Regulators */}
-      <Cell top="78.5%" left="22%" w="72%" value={pv(regulators.main)} onChange={(v) => onChange(["air_plant", "regulators", "main"], v)} align="left" />
-      <Cell top="80.7%" left="22%" w="72%" value={pv(regulators.bar_2)} onChange={(v) => onChange(["air_plant", "regulators", "bar_2"], v)} align="left" />
+      <Cell top="74.0%" left="22%" w="72%" value={pv(regulators.main)} onChange={(v) => onChange(["air_plant", "regulators", "main"], v)} align="left" />
+      <Cell top="76.2%" left="22%" w="72%" value={pv(regulators.bar_2)} onChange={(v) => onChange(["air_plant", "regulators", "bar_2"], v)} align="left" />
     </>
   );
 }
