@@ -40,15 +40,17 @@ function LoginForm() {
       });
 
       if (error) {
-        setError(t("login_error"));
+        console.error("Supabase auth error:", error.message, error);
+        setError(error.message);
         return;
       }
 
       router.replace(searchParams.get("next") || "/");
       router.refresh();
-    } catch (err) {
-      console.error("Sign-in failed:", err);
-      setError(t("login_error"));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("Sign-in failed:", msg);
+      setError(msg);
     } finally {
       setLoading(false);
     }
