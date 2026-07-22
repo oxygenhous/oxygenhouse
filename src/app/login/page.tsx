@@ -32,21 +32,26 @@ function LoginForm() {
     setError(null);
     setLoading(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    setLoading(false);
+      if (error) {
+        setError(t("login_error"));
+        return;
+      }
 
-    if (error) {
+      router.replace(searchParams.get("next") || "/");
+      router.refresh();
+    } catch (err) {
+      console.error("Sign-in failed:", err);
       setError(t("login_error"));
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    router.replace(searchParams.get("next") || "/");
-    router.refresh();
   }
 
   return (
