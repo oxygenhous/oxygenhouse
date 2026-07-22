@@ -753,14 +753,14 @@ function RecommendationOverlay({
         value={rec}
         onChange={(e) => onChange("recommendation", e.target.value)}
         className="absolute leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center font-semibold"
-        style={{ top: `${recPos.top}%`, left: `${recPos.left}%`, fontSize: "9pt", fontFamily: "'Inter', 'Cairo', sans-serif" }}
+        style={{ top: `${recPos.top}%`, left: `${recPos.left}%`, fontSize: "9pt", fontFamily: "var(--font-ibm-plex), sans-serif" }}
         placeholder="•••"
       />
       <textarea
         value={notes}
         onChange={(e) => onChange("notes", e.target.value)}
         className="absolute leading-tight w-[44%] h-[5%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 px-1 py-0.5 outline-none resize-none overflow-hidden text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:px-0 print:py-0 print:m-0 text-center font-semibold"
-        style={{ top: `${notesPos.top}%`, left: `${notesPos.left}%`, fontSize: "9pt", fontFamily: "'Inter', 'Cairo', sans-serif" }}
+        style={{ top: `${notesPos.top}%`, left: `${notesPos.left}%`, fontSize: "9pt", fontFamily: "var(--font-ibm-plex), sans-serif" }}
         placeholder="•••"
       />
     </>
