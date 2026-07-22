@@ -1,14 +1,12 @@
 import { createBrowserClient } from "@supabase/ssr";
 
+const SUPABASE_URL = "https://vbdqhwedkikkbpvhfwwj.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZiZHFod2Vka2lra2Jwdmhmd3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ0NDYwNDYsImV4cCI6MjEwMDAyMjA0Nn0.QCvbOF3yp2m4p0drUZZJkre0p8eh7PjskOGlfsV1U0Q";
+
 export function createClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) {
-    throw new Error(
-      `Supabase env vars missing at build time. URL=${url ? "set" : "MISSING"}, KEY=${key ? "set" : "MISSING"}`
-    );
-  }
-
-  return createBrowserClient(url, key);
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY
+  );
 }

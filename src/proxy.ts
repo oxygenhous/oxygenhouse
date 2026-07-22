@@ -1,18 +1,18 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const SUPABASE_URL = "https://vbdqhwedkikkbpvhfwwj.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZiZHFod2Vka2lra2Jwdmhmd3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ0NDYwNDYsImV4cCI6MjEwMDAyMjA0Nn0.QCvbOF3yp2m4p0drUZZJkre0p8eh7PjskOGlfsV1U0Q";
+
 const PUBLIC_PATHS = ["/login"];
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseAnonKey) {
-      return response;
-    }
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
