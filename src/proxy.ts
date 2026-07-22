@@ -11,8 +11,8 @@ export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
+    const supabaseUrl = SUPABASE_URL;
+    const supabaseAnonKey = SUPABASE_ANON_KEY;
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
