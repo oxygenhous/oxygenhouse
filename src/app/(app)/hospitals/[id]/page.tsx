@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { HospitalDetailContent } from "@/components/hospital-detail-content";
 import type { Hospital, Report } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function HospitalPage({
   params,
 }: {

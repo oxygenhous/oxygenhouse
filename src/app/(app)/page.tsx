@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { DashboardContent } from "@/components/dashboard-content";
 import type { Hospital } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function HospitalsPage() {
   let list: Hospital[] = [];
 

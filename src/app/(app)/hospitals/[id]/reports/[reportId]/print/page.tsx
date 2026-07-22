@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { PrintView } from "@/components/report-print/print-view";
 import type { Hospital, Report } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReportPrintPage({
   params,
 }: {
