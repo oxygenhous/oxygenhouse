@@ -537,9 +537,7 @@ function Cell({
         type="text"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
-        className={`w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:p-0 print:m-0
-          ${align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left"}
-        `}
+        className="w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium text-slate-800 placeholder-slate-300 print:placeholder-transparent print:border-transparent print:bg-transparent print:text-black print:p-0 print:m-0 text-center"
         style={{
           fontSize: "inherit",
           fontFamily: "inherit",
@@ -621,29 +619,29 @@ function HeaderOverlay({
 
   return (
     <>
-      <Cell pk={`${pageKey}_h_name`} top={5.2} left={22} w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} align="left" />
-      <Cell pk={`${pageKey}_h_contractor`} top={7.4} left={22} w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} align="left" />
+      <Cell pk={`${pageKey}_h_name`} top={5.2} left={22} w="30%" value={hospital.name} onChange={(v) => onChangeHospital("name", v)} />
+      <Cell pk={`${pageKey}_h_contractor`} top={7.4} left={22} w="30%" value={hospital.contractor_name || ""} onChange={(v) => onChangeHospital("contractor_name", v)} />
 
       {/* Date */}
       {calibrate ? (
         <div
           onPointerDown={(e) => startDrag(e, kDate, { top: 3.0, left: 64 })}
           title={kDate}
-          className="absolute z-30 flex items-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none leading-none touch-none"
+          className="absolute z-30 flex items-center justify-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none leading-none touch-none"
           style={{ top: `${datePos.top}%`, left: `${datePos.left}%`, width: "33%", height: "13px" }}
         >
           {formattedDate || "date"}
         </div>
       ) : (
-        <div className="absolute text-[7.5pt]" style={{ top: `${datePos.top}%`, left: `${datePos.left}%`, width: "33%", height: "12px" }}>
+        <div className="absolute text-[7.5pt] flex items-center justify-center" style={{ top: `${datePos.top}%`, left: `${datePos.left}%`, width: "33%", height: "12px" }}>
           <input
             type="date"
             value={reportDate}
             onChange={(e) => onChangeReportDate(e.target.value)}
-            className="print:hidden w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 text-left"
+            className="print:hidden w-full bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 text-center"
             style={{ height: "100%" }}
           />
-          <span className="hidden print:inline font-medium leading-none text-slate-800 print:text-black">
+          <span className="hidden print:inline font-medium leading-none text-slate-800 print:text-black text-center w-full">
             {formattedDate}
           </span>
         </div>
@@ -654,19 +652,19 @@ function HeaderOverlay({
         <div
           onPointerDown={(e) => startDrag(e, kLoc, { top: 5.2, left: 64 })}
           title={kLoc}
-          className="absolute z-30 flex items-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none leading-none touch-none"
+          className="absolute z-30 flex items-center justify-center rounded-sm border border-teal-400 bg-teal-50/80 text-[7pt] font-bold text-teal-800 cursor-move select-none leading-none touch-none"
           style={{ top: `${locPos.top}%`, left: `${locPos.left}%`, width: "33%", height: "13px" }}
         >
           {[hospital.city, hospital.governorate].filter(Boolean).join(" - ") || "location"}
         </div>
       ) : (
-        <div className="absolute text-[7.5pt] font-medium leading-none flex items-center gap-1" style={{ top: `${locPos.top}%`, left: `${locPos.left}%`, width: "33%", height: "12px" }}>
+        <div className="absolute text-[7.5pt] font-medium leading-none flex items-center justify-center gap-1" style={{ top: `${locPos.top}%`, left: `${locPos.left}%`, width: "33%", height: "12px" }}>
           <input
             type="text"
             value={hospital.city || ""}
             onChange={(e) => onChangeHospital("city", e.target.value)}
             placeholder="المدينة"
-            className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 text-left"
+            className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 text-center"
             style={{ height: "100%" }}
           />
           <span className="print:hidden text-slate-400">-</span>
@@ -675,10 +673,10 @@ function HeaderOverlay({
             value={hospital.governorate || ""}
             onChange={(e) => onChangeHospital("governorate", e.target.value)}
             placeholder="المحافظة"
-            className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 text-left"
+            className="print:hidden w-[45%] bg-transparent border-0 border-b border-dashed border-slate-200 hover:border-teal-400 focus:border-teal-500 focus:bg-teal-50/10 p-0 outline-none font-medium leading-none text-slate-800 placeholder-slate-300 text-center"
             style={{ height: "100%" }}
           />
-          <span className="hidden print:inline">
+          <span className="hidden print:inline text-center w-full">
             {[hospital.city, hospital.governorate].filter(Boolean).join(" - ")}
           </span>
         </div>
@@ -851,8 +849,8 @@ function AirPlantOverlay({
         />
       ))}
 
-      <Cell pk="ap_reg_main" top={74.0} left={22} w="72%" value={pv(regulators.main)} onChange={(v) => onChange(["air_plant", "regulators", "main"], v)} align="left" />
-      <Cell pk="ap_reg_bar2" top={76.2} left={22} w="72%" value={pv(regulators.bar_2)} onChange={(v) => onChange(["air_plant", "regulators", "bar_2"], v)} align="left" />
+      <Cell pk="ap_reg_main" top={74.0} left={22} w="72%" value={pv(regulators.main)} onChange={(v) => onChange(["air_plant", "regulators", "main"], v)} />
+      <Cell pk="ap_reg_bar2" top={76.2} left={22} w="72%" value={pv(regulators.bar_2)} onChange={(v) => onChange(["air_plant", "regulators", "bar_2"], v)} />
     </>
   );
 }

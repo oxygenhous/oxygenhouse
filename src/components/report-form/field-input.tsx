@@ -31,7 +31,7 @@ export function FieldInput({
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full rounded-xl border px-3 py-2.5 text-sm font-medium focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all cursor-pointer ${statusClass}`}
+          className={`w-full rounded-xl border px-3 py-2.5 text-sm font-medium focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all cursor-pointer text-center ${statusClass}`}
         >
           <option value="" className="text-slate-500 font-normal">—</option>
           {field.options?.map((opt) => (
@@ -50,7 +50,7 @@ export function FieldInput({
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-slate-200 bg-slate-50/30 px-3 py-2.5 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all"
+        className="w-full rounded-xl border border-slate-200 bg-slate-50/30 px-3 py-2.5 text-sm font-medium text-slate-800 placeholder-slate-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all text-center"
       />
     </label>
   );

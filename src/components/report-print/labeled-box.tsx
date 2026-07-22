@@ -16,7 +16,7 @@ export function LabeledBox({
             <div className="border-l border-gray-300 bg-gray-50 px-2 py-1 font-semibold">
               {row.label}
             </div>
-            <div className="px-2 py-1">{row.value || ""}</div>
+            <div className="px-2 py-1 text-center">{row.value || ""}</div>
           </div>
         ))}
       </div>
@@ -41,13 +41,13 @@ export function TransposedTable({
       <table className="w-full border-collapse text-[9pt]">
         <thead>
           <tr>
-            <th className="border border-gray-500 bg-gray-300 px-2 py-1 text-right">
+            <th className="border border-gray-500 bg-gray-300 px-2 py-1 text-center">
               {title}
             </th>
             {items.map((_, i) => (
               <th
                 key={i}
-                className="border border-gray-500 bg-gray-300 px-2 py-1"
+                className="border border-gray-500 bg-gray-300 px-2 py-1 text-center"
               >
                 {itemLabel} # {i + 1}
               </th>
@@ -61,7 +61,7 @@ export function TransposedTable({
                 {col.label}
               </td>
               {items.map((item, i) => (
-                <td key={i} className="border border-gray-500 px-2 py-1">
+                <td key={i} className="border border-gray-500 px-2 py-1 text-center">
                   {item[col.key] || ""}
                 </td>
               ))}
